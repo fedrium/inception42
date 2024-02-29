@@ -1,0 +1,41 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build: ./nginx/
+    ports:
+      - "8000:80"
+    restart: on-failure
+  mariadb:
+    container_name: mariadb
+    build: ./mariaDB/
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes: 
+      - mariaDB:/var/lib/mariadb
+  wordpress:
+    container_name: wordpress
+    build: ./wordPress/
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - wordPress:/var/www
+volumes:
+  mariaDB:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/chia/data
+  wordPress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/chia/data
