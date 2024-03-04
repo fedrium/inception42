@@ -1,6 +1,9 @@
 FROM debian:11
-RUN  apt-get -y update && apt-get -y install nginx
-COPY files/default /etc/nginx/sites-available/default
-COPY files/index.html 42/Inception/nginx/files
-EXPOSE 80
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+RUN  apt-get -y update && apt-get -y install nginx && apt-get -y install openssl
+COPY /files/default /etc/nginx/sites-available/default
+COPY /files/nginx.conf /etc/nginx/
+COPY /script/script.sh /
+EXPOSE 443
+
+CMD ["/script.sh"]
+# CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

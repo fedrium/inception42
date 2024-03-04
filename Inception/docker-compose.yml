@@ -1,11 +1,21 @@
 version: "3"
+
+networks:
+  inception:
+
 services:
   nginx:
     container_name: nginx
     build: ./nginx/
     ports:
-      - "8000:80"
+      - "443:443"
     restart: on-failure
+    networks: 
+     - inception
+    depends_on:
+     - wordpress
+    env_file:
+      - .env
   mariadb:
     container_name: mariadb
     build: ./mariaDB/
@@ -14,28 +24,39 @@ services:
       MYSQL_DATABASE: db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+      MYSQL_LOCALHOST: mariadb
     volumes: 
       - mariaDB:/var/lib/mariadb
+    ports:
+     - "3306:3306"
+    networks: 
+     - inception
+    env_file:
+      - .env
   wordpress:
+    depends_on: 
+     - mariadb
     container_name: wordpress
     build: ./wordPress/
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
     volumes:
-      - wordPress:/var/www
+      - wordPress:/var/www/html
+    restart: on-failure
+    ports:
+     - "9000:9000"
+    networks:
+      - inception
+    env_file:
+      - .env
 volumes:
   mariaDB:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/chia/data
+      device: /home/chia/data/mariaDB
   wordPress:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/chia/data
+      device: /home/chia/data/wordpress
