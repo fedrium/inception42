@@ -16,17 +16,19 @@ services:
      - wordpress
     env_file:
       - .env
+    volumes:
+      - wordpress:/var/www/html
   mariadb:
     container_name: mariadb
     build: ./mariaDB/
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_LOCALHOST: mariadb
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: password
+    #   MYSQL_DATABASE: db
+    #   MYSQL_USER: user
+    #   MYSQL_PASSWORD: password
+    #   MYSQL_LOCALHOST: mariadb
     volumes: 
-      - mariaDB:/var/lib/mariadb
+      - mariadb:/var/lib/mariadb
     ports:
      - "3306:3306"
     networks: 
@@ -39,7 +41,7 @@ services:
     container_name: wordpress
     build: ./wordPress/
     volumes:
-      - wordPress:/var/www/html
+      - wordpress:/var/www/html
     restart: on-failure
     ports:
      - "9000:9000"
@@ -48,13 +50,13 @@ services:
     env_file:
       - .env
 volumes:
-  mariaDB:
+  mariadb:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
       device: /home/chia/data/mariaDB
-  wordPress:
+  wordpress:
     driver: local
     driver_opts:
       type: 'none'

@@ -23,7 +23,7 @@ mv /wp-config.php /var/www/html/wp-config.php
 sed -i -r "s/MYSQL_DATABASE/$MYSQL_DATABASE/1"   wp-config.php
 sed -i -r "s/MYSQL_USER/$MYSQL_USER/1"  wp-config.php
 sed -i -r "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/1"    wp-config.php
-sed -i -r "s/MYSQL_LOCALHOST/$MYSQL_LOCALHOST/1"    wp-config.phpSSS
+sed -i -r "s/MYSQL_LOCALHOST/$MYSQL_LOCALHOST/1"    wp-config.php
 
 # run the wordpress setup
 wp core install --url=$DOMAIN_NAME/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USR --admin_password=$WP_ADMIN_PWD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
