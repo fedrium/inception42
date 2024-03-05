@@ -32,6 +32,8 @@ server {
         #
         # include snippets/snakeoil.conf;
 
+        include /etc/nginx/mime.types;
+
         ssl_protocols TLSv1.3;
         # ssl_prefer_server_ciphers on;
         ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
